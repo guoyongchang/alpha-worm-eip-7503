@@ -1,3 +1,22 @@
 .idea/
 .vscode/
 .env
+
+# 私钥文件（安全第一！）
+pk.txt
+*.txt
+!pk.txt.example
+!README.md
+!*.md
+
+# rapidsnark 输出文件
+rapidsnark_output.json
+rapidsnark_outputs/
+*.rapidsnark_output.json
+
+# 日志文件
+*.log
+burn_participate.log
+
+# disperseETH 目录（包含敏感信息，独立 git 仓库）
+disperseETH/

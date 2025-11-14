@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set default values
-PRIVATE_KEY=${PRIVATE_KEY:-"0x65"}
+PRIVATE_KEY=${PRIVATE_KEY:-"0xYOUR_PRIVATE_KEY_HERE"}
 CUSTOM_RPC=${CUSTOM_RPC:-"https://1rpc.io/sepolia"}
 
 # Allow command line arguments to override defaults
@@ -34,8 +34,7 @@ while true; do
         --network sepolia \
         --private-key "$PRIVATE_KEY" \
         --amount 1 \
-        --spend 0.999 \
-        --fee 0.001 \
+        --spend 1 \
         --custom-rpc "$CUSTOM_RPC"
 
     exit_code=$?

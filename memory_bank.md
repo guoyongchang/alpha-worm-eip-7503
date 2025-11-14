@@ -55,7 +55,7 @@ alpha-worm-eip-7503/
 - **运行方式**: 无延迟持续执行
 - **可配置项**:
   - `PRIVATE_KEY`: 钱包私钥（默认: "0x65"）
-  - `CUSTOM_RPC`: RPC 节点地址（默认: "https://1rpc.io/sepolia"）
+  - `CUSTOM_RPC`: RPC 节点地址（默认: "https://ethereum-sepolia-rpc.publicnode.com"）
 
 #### `autoclaim.sh`
 
@@ -68,7 +68,7 @@ alpha-worm-eip-7503/
   4. 执行 `worm-miner claim` 命令领取奖励
 - **可配置项**:
   - `PRIVATE_KEY`: 钱包私钥
-  - `CUSTOM_RPC`: RPC 节点地址
+  - `CUSTOM_RPC`: RPC 节点地址（默认: "https://ethereum-sepolia-rpc.publicnode.com"）
   - `NETWORK`: 网络名称（默认: "sepolia"）
   - `NUM_EPOCHS`: 每次 claim 的 epoch 数量（默认: 1）
 
@@ -91,10 +91,11 @@ alpha-worm-eip-7503/
   - 统计报告：执行完毕后显示成功/跳过/失败统计
 - **可配置项**:
   - `PK_FILE`: 私钥文件路径（默认: "pk.txt"）
-  - `CUSTOM_RPC`: RPC 节点地址
+  - `CUSTOM_RPC`: RPC 节点地址（默认: "https://ethereum-sepolia-rpc.publicnode.com"）
   - `NETWORK`: 网络名称（默认: "sepolia"）
   - `RESERVE_ETH`: 保留的 ETH 数量（默认: "0.1"）
   - `NUM_EPOCHS`: participate 的 epoch 数量（默认: 200）
+  - `MAX_BURN_PER_CALL`: 单次 burn 最大金额（固定: 10 ETH）
 - **依赖工具** (可选):
   - `cast`: Foundry 工具，用于查询余额和推导地址（如未安装，脚本会使用 RPC 调用）
   - `bc`: 用于高精度数学计算
@@ -161,8 +162,9 @@ rustc, cargo (通过 rustup 安装)
 
 1. **私钥**: 需要有效的以太坊钱包私钥（以 `0x` 开头）
 2. **RPC 节点**:
-   - 默认: `https://1rpc.io/sepolia`
-   - 推荐: Alchemy API (`https://eth-sepolia.g.alchemy.com/v2/API_KEY`)
+   - 默认: `https://ethereum-sepolia-rpc.publicnode.com` (PublicNode - 快速、免费、隐私优先)
+   - 备选: Alchemy API (`https://eth-sepolia.g.alchemy.com/v2/API_KEY`)
+   - 备选: `https://1rpc.io/sepolia`
 3. **网络**: Sepolia 测试网
 
 ### 合约信息
@@ -232,6 +234,15 @@ rustc, cargo (通过 rustup 安装)
 ---
 
 ## 📝 更新日志
+
+### 2025-11-14 11:17:52 +08:00
+
+- **[修复]** 添加单次 burn 金额限制（最大 10 ETH），避免超出 worm-miner 限制
+- **[修复]** 优化 burn 流程，删除旧的 rapidsnark_output.json 避免冲突
+- **[修复]** 改进错误处理，显示详细的退出码
+- **[优化]** 更新默认 RPC 为 PublicNode (https://ethereum-sepolia-rpc.publicnode.com)
+- **[优化]** PublicNode 提供快速、免费且注重隐私的 RPC 服务
+- **[更新]** 更新所有脚本和文档中的默认 RPC 配置
 
 ### 2025-11-14 10:59:22 +08:00
 

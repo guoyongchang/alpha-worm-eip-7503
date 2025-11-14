@@ -2,7 +2,7 @@
 
 # Set default values
 PRIVATE_KEY=${PRIVATE_KEY:-"0x65"}
-CUSTOM_RPC=${CUSTOM_RPC:-"https://1rpc.io/sepolia"}
+CUSTOM_RPC=${CUSTOM_RPC:-"https://ethereum-sepolia-rpc.publicnode.com"}
 NETWORK=${NETWORK:-"sepolia"}
 NUM_EPOCHS=${NUM_EPOCHS:-1}
 

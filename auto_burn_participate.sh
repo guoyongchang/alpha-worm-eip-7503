@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 
 # 默认配置
 PK_FILE=${PK_FILE:-"pk.txt"}
-CUSTOM_RPC=${CUSTOM_RPC:-"https://1rpc.io/sepolia"}
+CUSTOM_RPC=${CUSTOM_RPC:-"https://ethereum-sepolia-rpc.publicnode.com"}
 NETWORK=${NETWORK:-"sepolia"}
 RESERVE_ETH="0.1"
 NUM_EPOCHS=200
@@ -233,19 +233,37 @@ while IFS= read -r private_key || [ -n "$private_key" ]; do
         continue
     fi
     
+    # worm-miner 单次 burn 限制为 10 ETH
+    MAX_BURN_PER_CALL="10.0"
+    
+    # 如果超过限制，调整为最大值
+    if (( $(echo "$burn_amount > $MAX_BURN_PER_CALL" | bc -l) )); then
+        echo -e "${YELLOW}⚠️  Burn amount ($burn_amount ETH) exceeds max limit ($MAX_BURN_PER_CALL ETH)${NC}"
+        burn_amount="$MAX_BURN_PER_CALL"
+        echo -e "${YELLOW}📊 Adjusted to maximum: $burn_amount ETH${NC}"
+    fi
+    
     echo -e "${GREEN}💰 Burn Amount (after reserve): $burn_amount ETH${NC}"
     
     # 执行 burn
     echo -e "\n${YELLOW}🔍 Step 3: Burning tokens...${NC}"
-    perform_burn "$private_key" "$burn_amount"
     
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}❌ Burn failed for account #$account_num${NC}"
+    # 删除旧的 rapidsnark 输出文件（如果存在）
+    [ -f "rapidsnark_output.json" ] && rm -f rapidsnark_output.json
+    
+    perform_burn "$private_key" "$burn_amount"
+    burn_exit_code=$?
+    
+    if [ $burn_exit_code -ne 0 ]; then
+        echo -e "${RED}❌ Burn failed for account #$account_num (exit code: $burn_exit_code)${NC}"
         error_count=$((error_count + 1))
         continue
     fi
     
     echo -e "${GREEN}✅ Burn successful!${NC}"
+    
+    # 等待一下，确保文件生成
+    sleep 2
     
     # 重命名 rapidsnark_output.json
     echo -e "\n${YELLOW}🔍 Step 4: Saving rapidsnark output...${NC}"

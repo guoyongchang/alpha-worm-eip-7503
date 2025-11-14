@@ -2,7 +2,7 @@
 
 # Set default values
 PRIVATE_KEY=${PRIVATE_KEY:-"0xYOUR_PRIVATE_KEY_HERE"}
-CUSTOM_RPC=${CUSTOM_RPC:-"https://1rpc.io/sepolia"}
+CUSTOM_RPC=${CUSTOM_RPC:-"https://ethereum-sepolia-rpc.publicnode.com"}
 
 # Allow command line arguments to override defaults
 while [[ $# -gt 0 ]]; do

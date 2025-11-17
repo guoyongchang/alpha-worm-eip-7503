@@ -35,11 +35,13 @@
 alpha-worm-eip-7503/
 ├── autoburn.sh                  # 自动 burn 脚本（持续执行）
 ├── autoclaim.sh                 # 自动 claim 脚本（每10分钟检测）
-├── auto_burn_participate.sh     # 批量 burn & participate 脚本（新增）
+├── auto_burn_participate.sh     # 批量 burn & participate 脚本
+├── batch_claim.sh               # 批量 claim 脚本（新增）⭐
 ├── pk.txt                       # 私钥列表文件（需自行创建）
 ├── pk.txt.example               # 私钥文件示例
 ├── rapidsnark_outputs/          # rapidsnark 输出文件存储目录
 ├── README.md                    # 完整的项目说明文档
+├── BATCH_CLAIM_README.md        # 批量 claim 使用文档（新增）⭐
 ├── img.png                      # 合约查询示例图片
 └── memory_bank.md               # 项目记忆库（本文件）
 ```
@@ -72,7 +74,28 @@ alpha-worm-eip-7503/
   - `NETWORK`: 网络名称（默认: "sepolia"）
   - `NUM_EPOCHS`: 每次 claim 的 epoch 数量（默认: 1）
 
-#### `auto_burn_participate.sh` ⭐ 新增
+#### `batch_claim.sh` ⭐ 新增
+
+- **功能**: 批量领取指定范围的 epoch 奖励
+- **核心特点**:
+  - 自定义 epoch 范围（默认: 558-1058）
+  - 分批领取（默认: 每次 100 个 epoch）
+  - 多账户支持（从 pk.txt 读取）
+  - 智能延迟避免 RPC 限流（默认: 5 秒）
+  - 执行前显示计划并要求确认
+- **典型用法**:
+  ```bash
+  ./batch_claim.sh --start-epoch 558 --end-epoch 1058 --epochs-per-claim 100
+  ```
+- **可配置项**:
+  - `PK_FILE`: 私钥文件路径（默认: "pk.txt"）
+  - `CUSTOM_RPC`: RPC 节点地址（默认: PublicNode）
+  - `START_EPOCH`: 起始 epoch（默认: 558）
+  - `END_EPOCH`: 结束 epoch（默认: 1058）
+  - `EPOCHS_PER_CLAIM`: 每次领取数量（默认: 100）
+  - `DELAY_BETWEEN_CLAIMS`: claim 之间延迟（默认: 5 秒）
+
+#### `auto_burn_participate.sh`
 
 - **功能**: 批量处理多个账户的 burn 和 participate 操作
 - **处理流程**（每个账户依次完成）:
@@ -234,6 +257,17 @@ rustc, cargo (通过 rustup 安装)
 ---
 
 ## 📝 更新日志
+
+### 2025-11-17 11:04:10 +08:00
+
+- **[新增]** 创建 `batch_claim.sh` 批量 claim 脚本
+- **[新增]** 创建 `BATCH_CLAIM_README.md` 详细使用文档
+- **[功能]** 支持自定义 epoch 范围批量领取（默认 558-1058）
+- **[功能]** 分批领取机制（默认每次 100 个 epoch）
+- **[功能]** 多账户批量处理支持
+- **[功能]** 智能延迟避免 RPC 限流
+- **[功能]** 执行前显示计划并要求用户确认
+- **[功能]** 详细的成功/失败统计报告
 
 ### 2025-11-14 11:17:52 +08:00
 
